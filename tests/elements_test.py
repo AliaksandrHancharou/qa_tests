@@ -1,4 +1,4 @@
-from pages.elements_page import TextBoxPage, CheckBoxPage
+from pages.elements_page import TextBoxPage, CheckBoxPage, RadioButtonPage
 
 
 class TestElements:
@@ -24,3 +24,18 @@ class TestElements:
             list_in = check_box_page.get_checked_checkboxes()
             list_out = check_box_page.get_output_result()
             assert list_in == list_out
+
+    class TestRadioButton:
+        def test_radio_button(self, driver):
+            radio_button_page = RadioButtonPage(driver, 'https://demoqa.com/radio-button')
+            radio_button_page.open()
+            radio_button_page.click_radio_button('yes')
+            radio_button_result_yes = radio_button_page.get_radio_button_result()
+            radio_button_page.click_radio_button('impressive')
+            radio_button_result_impressive = radio_button_page.get_radio_button_result()
+            radio_button_page.click_radio_button('no')
+            radio_button_result_no = radio_button_page.get_radio_button_result()
+
+            assert radio_button_result_yes == 'Yes'
+            assert radio_button_result_impressive == 'Impressive'
+            assert radio_button_result_no == 'No'
