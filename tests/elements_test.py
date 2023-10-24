@@ -1,5 +1,3 @@
-import time
-
 from pages.elements_page import *
 
 
@@ -80,4 +78,16 @@ class TestElements:
             web_tables_page = WebTablesPage(driver, 'https://demoqa.com/webtables')
             web_tables_page.open()
             count = web_tables_page.select_up_to_some_rows()
-            assert count == [5, 10, 20, 25, 50, 100], 'The number of rows in the table has not been changed or has changed incorrectly'
+            assert count == [5, 10, 20, 25, 50, 100], ('The number of rows in the table has not been changed'
+                                                       ' or has changed incorrectly')
+
+    class TestButtonsPage:
+        def test_buttons_click(self, driver):
+            buttons_page = ButtonsPage(driver, 'https://demoqa.com/buttons')
+            buttons_page.open()
+            double = buttons_page.click_buttons('double')
+            right = buttons_page.click_buttons('right')
+            click = buttons_page.click_buttons('click')
+            assert double == 'You have done a double click'
+            assert right == 'You have done a right click'
+            assert click == 'You have done a dynamic click'

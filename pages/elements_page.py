@@ -132,3 +132,23 @@ class WebTablesPage(BasePage):
     def check_count_rows(self):
         list_rows = self.elements_are_present(self.locators.PERSON_LIST)
         return len(list_rows)
+
+
+class ButtonsPage(BasePage):
+    locators = ButtonsPageLocators()
+
+    def click_buttons(self, type_click):
+        if type_click == 'double':
+            self.action_double_click(self.element_is_visible(self.locators.DOUBLE_CLICK_BUTTON))
+            return self.check_clicked_on_the_button(self.locators.DOUBLE_CLICK_CHECK)
+
+        if type_click == 'right':
+            self.action_right_click(self.element_is_visible(self.locators.RIGHT_CLICK_BUTTON))
+            return self.check_clicked_on_the_button(self.locators.RIGHT_CLICK_CHECK)
+
+        if type_click == 'click':
+            self.element_is_visible(self.locators.JUST_CLICK).click()
+            return self.check_clicked_on_the_button(self.locators.JUST_CLICK_CHECK)
+
+    def check_clicked_on_the_button(self, element):
+        return self.element_is_present(element).text
