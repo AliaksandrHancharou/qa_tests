@@ -1,10 +1,11 @@
 import requests
-
 from locators.elements_page_locator import *
 from .base_page import BasePage
 from generator.generator import generated_person
 from selenium.webdriver.common.by import By
 import random
+from selenium.webdriver.support.wait import WebDriverWait as wait
+from selenium.webdriver.support import expected_conditions as EC
 
 
 class TextBoxPage(BasePage):
@@ -70,6 +71,90 @@ class RadioButtonPage(BasePage):
 
     def get_radio_button_result(self):
         return self.element_is_present(self.locators.OUTPUT_RESULT).text
+
+
+class WebTablesPage(BasePage):
+    locators = WebTablesPageLocators()
+
+    def add_person(self, person_count=1):
+        for i in range(person_count):
+            person = next(generated_person())
+            first_name, last_name, email, age, salary, department = (person.first_name,
+                                                                     person.last_name, person.email,
+                                                                     person.age, person.salary,
+                                                                     person.department)
+            self.element_is_present(self.locators.ADD_BUTTON).click()
+            self.element_is_visible(self.locators.FIRST_NAME_INPUT).send_keys(first_name)
+            self.element_is_visible(self.locators.LAST_NAME_INPUT).send_keys(last_name)
+            self.element_is_visible(self.locators.EMAIL_INPUT).send_keys(email)
+            self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+            self.element_is_visible(self.locators.SALARY_INPUT).send_keys(salary)
+            self.element_is_visible(self.locators.DEPARTMENT_INPUT).send_keys(department)
+            self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+            return [first_name, last_name, str(age), email, str(salary), department]
+
+    def get_person_list(self):
+        person_list = self.elements_are_present(self.locators.PERSON_LIST)
+        return [i.text.splitlines() for i in person_list]
+
+    def search_person(self, key_word):
+        self.element_is_visible(self.locators.SEARCH_INPUT).send_keys(key_word)
+
+    def check_search_person(self):
+        delete_button = self.element_is_present(self.locators.DELETE_BUTTON)
+        self.driver.implicitly_wait(5)
+        row = delete_button.find_element(By.XPATH, self.locators.ROW_PARENT)
+        return row.text.splitlines()
+
+    def update_person_info(self):
+        person_info = next(generated_person())
+        age = person_info.age
+        self.element_is_visible(self.locators.EDIT_BUTTON).click()
+        self.element_is_visible(self.locators.AGE_INPUT).clear()
+        self.element_is_visible(self.locators.AGE_INPUT).send_keys(age)
+        self.element_is_visible(self.locators.SUBMIT_BUTTON).click()
+        return str(age)
+
+    def delete_person(self):
+        self.element_is_visible(self.locators.DELETE_BUTTON).click()
+
+    def check_deleted(self):
+        return self.element_is_present(self.locators.NO_ROWS_FOUND).text
+
+    def select_up_to_some_rows(self):
+        count = [5, 10, 20, 25, 50, 100]
+        data = []
+        for i in count:
+            count_row_button = self.element_is_visible(self.locators.COUNT_ROW_LIST)
+            self.go_to_element(count_row_button)
+            count_row_button.click()
+            self.element_is_visible((By.CSS_SELECTOR, f"option[value='{i}']")).click()
+            data.append(self.check_count_rows())
+        return data
+
+    def check_count_rows(self):
+        list_rows = self.elements_are_present(self.locators.PERSON_LIST)
+        return len(list_rows)
+
+
+class ButtonsPage(BasePage):
+    locators = ButtonsPageLocators()
+
+    def click_buttons(self, type_click):
+        if type_click == 'double':
+            self.action_double_click(self.element_is_visible(self.locators.DOUBLE_CLICK_BUTTON))
+            return self.check_clicked_on_the_button(self.locators.DOUBLE_CLICK_CHECK)
+
+        if type_click == 'right':
+            self.action_right_click(self.element_is_visible(self.locators.RIGHT_CLICK_BUTTON))
+            return self.check_clicked_on_the_button(self.locators.RIGHT_CLICK_CHECK)
+
+        if type_click == 'click':
+            self.element_is_visible(self.locators.JUST_CLICK).click()
+            return self.check_clicked_on_the_button(self.locators.JUST_CLICK_CHECK)
+
+    def check_clicked_on_the_button(self, element):
+        return self.element_is_present(element).text
 
 
 class LinksPage(BasePage):

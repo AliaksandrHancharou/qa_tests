@@ -29,6 +29,40 @@ class RadioButtonPageLocators:
     OUTPUT_RESULT = (By.CSS_SELECTOR, "span[class='text-success']")
 
 
+class WebTablesPageLocators:
+    # add person form
+    ADD_BUTTON = (By.CSS_SELECTOR, "button#addNewRecordButton")
+    FIRST_NAME_INPUT = (By.CSS_SELECTOR, "input#firstName")
+    LAST_NAME_INPUT = (By.CSS_SELECTOR, "input#lastName")
+    EMAIL_INPUT = (By.CSS_SELECTOR, "input#userEmail")
+    AGE_INPUT = (By.CSS_SELECTOR, "input[id='age']")
+    SALARY_INPUT = (By.CSS_SELECTOR, "input#salary")
+    DEPARTMENT_INPUT = (By.CSS_SELECTOR, "input#department")
+    SUBMIT_BUTTON = (By.CSS_SELECTOR, "button#submit")
+
+    # table
+    PERSON_LIST = (By.CSS_SELECTOR, "div.rt-tr-group")
+    SEARCH_INPUT = (By.CSS_SELECTOR, "input[id='searchBox']")
+    DELETE_BUTTON = (By.CSS_SELECTOR, "span[title='Delete']")
+    ROW_PARENT = ".//ancestor::div[@class='rt-tr-group']"
+    NO_ROWS_FOUND = (By.CSS_SELECTOR, "div[class='rt-noData']")
+    COUNT_ROW_LIST = (By.CSS_SELECTOR, "select[aria-label='rows per page']")
+
+    # update
+    EDIT_BUTTON = (By.CSS_SELECTOR, "span[title='Edit']")
+
+
+class ButtonsPageLocators:
+    DOUBLE_CLICK_BUTTON = (By.CSS_SELECTOR, "button[id='doubleClickBtn']")
+    RIGHT_CLICK_BUTTON = (By.CSS_SELECTOR, "button[id='rightClickBtn']")
+    JUST_CLICK = (By.XPATH, "//*[text()='Click Me']")
+
+    # Results
+    DOUBLE_CLICK_CHECK = (By.CSS_SELECTOR, "p[id='doubleClickMessage']")
+    RIGHT_CLICK_CHECK = (By.CSS_SELECTOR, "p[id='rightClickMessage']")
+    JUST_CLICK_CHECK = (By.CSS_SELECTOR, "p[id='dynamicClickMessage']")
+
+
 class LinksPageLocators:
     SIMPLE_LINK = (By.CSS_SELECTOR, "a[id='simpleLink']")
     BAD_REQUEST = (By.CSS_SELECTOR, "a[id='bad-request']")
